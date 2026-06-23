@@ -125,7 +125,7 @@ const fallbackEstablishments = [
   },
 ];
 
-const API_URL = window.location.origin.startsWith("http") ? window.location.origin : "http://localhost:3000";
+const API_URL = window.location.origin.startsWith("http") ? window.location.origin : "https://easy-quixada-srv-1.onrender.com/";
 
 let establishments = fallbackEstablishments;
 let activeCategory = "todos";
