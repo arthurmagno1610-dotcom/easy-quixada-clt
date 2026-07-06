@@ -35,106 +35,7 @@ const categories = [
   },
 ];
 
-const fallbackEstablishments = [
-  {
-    id: "nosso-atacarejo",
-    name: "Nosso Atacarejo",
-    category: "alimentacao",
-    categoryLabel: "Alimentação",
-    image:
-      "https://www.figma.com/api/mcp/asset/966fe9e7-c92a-4478-a167-2174592e08b9",
-    address: "Av. Plácido Castelo, Quixadá - CE",
-    phone: "(88) 99900-1212",
-    hours: "Segunda a sábado, 7h às 21h",
-    instagram: "@nossoatacarejo",
-    description:
-      "Atacarejo com variedade de alimentos, bebidas, produtos de limpeza e itens para compras grandes ou rápidas do dia a dia.",
-  },
-  {
-    id: "casa-dantas",
-    name: "Casa Dantas",
-    category: "lazer",
-    categoryLabel: "Moda e variedades",
-    image:
-      "https://www.figma.com/api/mcp/asset/7c190e15-fb89-4c35-a22f-e247f75c25da",
-    address: "Centro, Quixadá - CE",
-    phone: "(88) 99914-2020",
-    hours: "Segunda a sexta, 8h às 18h",
-    instagram: "@casadantas",
-    description:
-      "Loja de moda e variedades para quem procura roupas, presentes e novidades no comércio local de Quixadá.",
-  },
-  {
-    id: "thiago-barber",
-    name: "Thiago Barber",
-    category: "saude",
-    categoryLabel: "Saúde & Bem-estar",
-    image:
-      "https://www.figma.com/api/mcp/asset/c9c0b4a6-b86a-4c3b-877e-608442bd1d6a",
-    address: "Bairro Centro, Quixadá - CE",
-    phone: "(88) 98144-6600",
-    hours: "Terça a sábado, 9h às 19h",
-    instagram: "@thiagobarber",
-    description:
-      "Barbearia com serviços de corte, barba e cuidados pessoais, com atendimento por ordem de chegada ou agendamento.",
-  },
-  {
-    id: "all-in-delivery",
-    name: "All In Delivery",
-    category: "alimentacao",
-    categoryLabel: "Alimentação",
-    image:
-      "https://www.figma.com/api/mcp/asset/56368964-0820-474d-8349-bf231545941b",
-    address: "Quixadá - CE",
-    phone: "(88) 99777-4545",
-    hours: "Todos os dias, 18h às 23h30",
-    instagram: "@allindelivery",
-    description:
-      "Delivery de lanches, porções e combos para pedir em casa, com foco em praticidade e atendimento rápido.",
-  },
-  {
-    id: "clinica-sertao",
-    name: "Clínica Sertão",
-    category: "saude",
-    categoryLabel: "Saúde & Bem-estar",
-    image:
-      "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80",
-    address: "Rua Basílio Pinto, Quixadá - CE",
-    phone: "(88) 99640-3131",
-    hours: "Segunda a sexta, 7h30 às 17h",
-    instagram: "@clinicasertao",
-    description:
-      "Atendimento médico e serviços de saúde para consultas, exames básicos e acompanhamento preventivo.",
-  },
-  {
-    id: "tec-cell",
-    name: "Tec Cell Assistência",
-    category: "manutencao",
-    categoryLabel: "Manutenção",
-    image:
-      "https://images.unsplash.com/photo-1603539444875-76e7684265f6?auto=format&fit=crop&w=900&q=80",
-    address: "Rua Tabelião Enéas, Quixadá - CE",
-    phone: "(88) 99822-7070",
-    hours: "Segunda a sábado, 8h às 18h",
-    instagram: "@teccellquixada",
-    description:
-      "Assistência técnica para celulares, acessórios e manutenção rápida para aparelhos eletrônicos.",
-  },
-  {
-    id: "hub-academico",
-    name: "Hub Acadêmico",
-    category: "academico",
-    categoryLabel: "Acadêmico",
-    image:
-      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=900&q=80",
-    address: "Próximo ao campus UFC, Quixadá - CE",
-    phone: "(88) 99950-8080",
-    hours: "Segunda a sexta, 9h às 20h",
-    instagram: "@hubacademicoqx",
-    description:
-      "Espaço de apoio estudantil com impressão, materiais acadêmicos, consultoria e serviços para universitários.",
-  },
-];
+const fallbackEstablishments = [];
 
 const API_URL =
   window.location.hostname === "localhost"
@@ -176,7 +77,7 @@ function establishmentFromApi(item) {
     categoryLabel,
     image:
       item.imagem ||
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80",
+      "/uploads/estabelecimento-1783377106408-346549738.jpg",
     address: item.endereco || "QuixadÃ¡ - CE",
     phone: item.telefone || "",
     hours: "HorÃ¡rio nÃ£o informado",
@@ -195,6 +96,9 @@ async function loadEstablishmentsFromDatabase() {
     }
 
     const data = await response.json();
+
+    console.log("Estabelecimentos carregados do banco de dados:", data);
+
     establishments = data.length
       ? data.map(establishmentFromApi)
       : fallbackEstablishments;
@@ -215,9 +119,13 @@ function renderHome() {
       </header>
 
       <div class="hero-copy">
-        <h1>Olá, Arthur!</h1>
         <p>O que vamos descobrir hoje?</p>
       </div>
+
+      <label class="search">
+        ${icons.search}
+        <input id="search-input" type="search" value="${escapeHtml(searchTerm)}" placeholder="Restaurantes, academias, farmácias..." />
+      </label>  
 
       <div class="category-row" aria-label="Categorias">
         ${categories
@@ -232,11 +140,6 @@ function renderHome() {
           )
           .join("")}
       </div>
-
-      <label class="search">
-        ${icons.search}
-        <input id="search-input" type="search" value="${escapeHtml(searchTerm)}" placeholder="Restaurantes, academias, farmácias..." />
-      </label>
 
       <h2 class="section-title" id="section-title">${getSectionTitle()}</h2>
 
